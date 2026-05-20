@@ -33,6 +33,7 @@ createApp({
   methods: {
     // vrne seznam glasbenikov
     loadMusicians() {
+      // klične online backend
       axios.get("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians")
         // arrow notation: response, ki mi ga vrne axios.get, mi omogoča da preberem podatke, ki me zanimajo (response.data) in jih vrnem v lokalno spremenljivko 'musicians' (kot bi mi napisali notri)
         .then((response) => {
