@@ -27,7 +27,7 @@ createApp({
     methods: {
         // vrne seznam glasbenikov
         loadAlbums() {
-            axios.get("http://localhost:8080/albums/getAll")
+            axios.get("http://localhost:8080/albums")
                 .then((response) => {
                     this.albums = response.data;
                 })
@@ -50,17 +50,24 @@ createApp({
         },
         // za formular, kjer uporabnik vnese podatke za nov album
         postAlbum() {
-            axios.post("http://localhost:8080/albums/create", this.formAlbum)
-                .then((response) => {
-                    this.loadAlbums();
-                    this.formMusician.name = '';
-                    this.formMusician.genre = null;
-                    this.formMusician.musician = null;
-                })
-                .catch((error) => console.error(error));
+            if (this.formAlbum.id) {
+                axios.put("http://localhost:8080/albums/" + this.formAlbum.id, this.formAlbum)
+                    .then((response) => {
+                        this.loadAlbums();
+                        this.cleanForm();
+                    })
+                    .catch((error) => console.error(error));
+            } else {
+                axios.post("http://localhost:8080/albums", this.formAlbum)
+                    .then((response) => {
+                        this.loadAlbums();
+                        this.cleanForm();
+                    })
+                    .catch((error) => console.error(error));
+            }
         },
         deleteAlbum(id) {
-            axios.delete("http://localhost:8080/albums/delete/" + id)
+            axios.delete("http://localhost:8080/albums/" + id)
                 .then((response) => {
                     this.loadAlbums();
                 })
@@ -78,6 +85,7 @@ createApp({
             this.formAlbum.id = null;
             this.formAlbum.name = '';
             this.formAlbum.genre = '';
+            this.formAlbum.musician = '';
 
         }
     }
