@@ -27,14 +27,14 @@ createApp({
     methods: {
         // vrne seznam glasbenikov
         loadAlbums() {
-            axios.get("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums")
+            axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums")
                 .then((response) => {
                     this.albums = response.data;
                 })
                 .catch((error) => console.error(error));
         },
         loadMusicians() {
-            axios.get("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians")
+            axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians")
                 // arrow notation: response, ki mi ga vrne axios.get, mi omogoča da preberem podatke, ki me zanimajo (response.data) in jih vrnem v lokalno spremenljivko 'musicians' (kot bi mi napisali notri)
                 .then((response) => {
                     this.musicians = response.data;
@@ -42,7 +42,7 @@ createApp({
                 .catch((error) => console.error(error));
         },
         loadGenres() {
-            axios.get("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres")
+            axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres")
                 .then((response) => {
                     this.genres = response.data;
                 })
@@ -51,14 +51,14 @@ createApp({
         // za formular, kjer uporabnik vnese podatke za nov album
         postAlbum() {
             if (this.formAlbum.id) {
-                axios.put("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums/" + this.formAlbum.id, this.formAlbum)
+                axios.put("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums/" + this.formAlbum.id, this.formAlbum)
                     .then((response) => {
                         this.loadAlbums();
                         this.cleanForm();
                     })
                     .catch((error) => console.error(error));
             } else {
-                axios.post("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums", this.formAlbum)
+                axios.post("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums", this.formAlbum)
                     .then((response) => {
                         this.loadAlbums();
                         this.cleanForm();
@@ -67,7 +67,7 @@ createApp({
             }
         },
         deleteAlbum(id) {
-            axios.delete("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums/" + id)
+            axios.delete("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums/" + id)
                 .then((response) => {
                     this.loadAlbums();
                 })
