@@ -2,7 +2,7 @@ package si.unm.fis.prspr.mb.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,40 +18,41 @@ import si.unm.fis.prspr.mb.service.MusicianService;
 @RestController
 @RequestMapping("/musicians")
 public class MusicianController {
-	@Autowired
-	private MusicianService musicianService;
-	
-	
-	// POST mapping
-	@PostMapping("/create")
-	public Musician createMusician(@RequestBody Musician musician) {
-		return musicianService.createMusician(musician);
-	}
-		
-	
-	// GET mapping
-	// ALL
-	@GetMapping("/getAll")
-	public List<Musician> getAllMusicians() {
-		return musicianService.getAllMusicians();
-	}
-	
-	// BY GENRE NAME
-	@GetMapping("/byGenre/{genreName}")
-	public List<Musician> getMusiciansByGenre(@PathVariable String genreName) {
-		return musicianService.getMusiciansByGenre(genreName);
-	}
-	
-	// UPDATE 
-	@PutMapping("/update")
-	public Musician updateMusician(@PathVariable Musician musician) {
-		return musicianService.updateMusician(musician);
-	}
 
-	
-	// DELETE mapping
-	@DeleteMapping("/delete/{id}")
-	public String deleteMusician(@PathVariable int id) {
-		return musicianService.deleteMusician(id);
-	}
+    private final MusicianService musicianService;
+
+    public MusicianController(MusicianService musicianService) {
+        this.musicianService = musicianService;
+    }
+
+    @PostMapping
+    public Musician createMusician(@RequestBody Musician musician) {
+        return musicianService.createMusician(musician);
+    }
+
+    @GetMapping
+    public List<Musician> getAllMusicians() {
+        return musicianService.getAllMusicians();
+    }
+
+    @GetMapping("/{id}")
+    public Musician getMusicianById(@PathVariable int id) {
+        return musicianService.getMusicianById(id);
+    }
+
+    @GetMapping("/byGenre/{genreName}")
+    public List<Musician> getMusiciansByGenre(@PathVariable String genreName) {
+        return musicianService.getMusiciansByGenre(genreName);
+    }
+
+    @PutMapping("/{id}")
+    public Musician updateMusician(@PathVariable int id, @RequestBody Musician musician) {
+        return musicianService.updateMusician(id, musician);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMusician(@PathVariable int id) {
+        musicianService.deleteMusician(id);
+        return ResponseEntity.noContent().build();
+    }
 }
