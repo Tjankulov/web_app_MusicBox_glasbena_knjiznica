@@ -2,7 +2,7 @@ package si.unm.fis.prspr.mb.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,35 +18,36 @@ import si.unm.fis.prspr.mb.service.AlbumService;
 @RestController
 @RequestMapping("/albums")
 public class AlbumController {
-	@Autowired
-	private AlbumService albumService;
-	
-	
-	// POST mapping
-	@PostMapping("/create")
-	public Album createAlbum(@RequestBody Album album) {
-		return albumService.createAlbum(album);
-	}
-		
-	
-	// GET mapping
-	// ALL
-	@GetMapping("/getAll")
-	public List<Album> getAllAlbums() {
-		return albumService.getAllAlbums();
-	}
-	
-	
-	// UPDATE 
-	@PutMapping("/update")
-	public Album updateAlbum(@PathVariable Album album) {
-		return albumService.updateAlbum(album);
-	}
 
-	
-	// DELETE mapping
-	@DeleteMapping("/delete/{id}")
-	public String deleteAlbum(@PathVariable int id) {
-		return albumService.deleteAlbum(id);
-	}
+    private final AlbumService albumService;
+
+    public AlbumController(AlbumService albumService) {
+        this.albumService = albumService;
+    }
+
+    @PostMapping
+    public Album createAlbum(@RequestBody Album album) {
+        return albumService.createAlbum(album);
+    }
+
+    @GetMapping
+    public List<Album> getAllAlbums() {
+        return albumService.getAllAlbums();
+    }
+
+    @GetMapping("/{id}")
+    public Album getAlbumById(@PathVariable int id) {
+        return albumService.getAlbumById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Album updateAlbum(@PathVariable int id, @RequestBody Album album) {
+        return albumService.updateAlbum(id, album);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAlbum(@PathVariable int id) {
+        albumService.deleteAlbum(id);
+        return ResponseEntity.noContent().build();
+    }
 }
