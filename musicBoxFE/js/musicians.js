@@ -34,7 +34,7 @@ createApp({
     // vrne seznam glasbenikov
     loadMusicians() {
       // klične online backend
-      axios.get("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians")
+      axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians")
         // arrow notation: response, ki mi ga vrne axios.get, mi omogoča da preberem podatke, ki me zanimajo (response.data) in jih vrnem v lokalno spremenljivko 'musicians' (kot bi mi napisali notri)
         .then((response) => {
           this.musicians = response.data;
@@ -42,14 +42,14 @@ createApp({
         .catch((error) => console.error(error));
     },
     loadGenres() {
-      axios.get("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres")
+      axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres")
         .then((response) => {
           this.genres = response.data;
         })
         .catch((error) => console.error(error));
     },
     loadMusiciansByGenre() {
-      axios.get("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/byGenre/" + this.inputGenre)
+      axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/byGenre/" + this.inputGenre)
         .then((response) => {
           this.musicians = response.data;
         })
@@ -58,14 +58,14 @@ createApp({
     // za formular, kjer uporabnik vnese podatke za novega glasbenika
     postMusician() {
       if (this.formMusician.id) {
-        axios.put("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians/" + this.formMusician.id, this.formMusician)
+        axios.put("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians/" + this.formMusician.id, this.formMusician)
           .then((response) => {
             this.loadMusicians();
             this.cleanForm();
           })
           .catch((error) => console.error(error));
       } else {
-        axios.post("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians", this.formMusician)
+        axios.post("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians", this.formMusician)
           .then((response) => {
             this.loadMusicians();
             this.cleanForm();
@@ -74,7 +74,7 @@ createApp({
       }
     },
     deleteMusician(id) {
-      axios.delete("http://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians/" + id)
+      axios.delete("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians/" + id)
         .then((response) => {
           this.loadMusicians();
         })
