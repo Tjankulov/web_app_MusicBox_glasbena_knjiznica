@@ -1,0 +1,38 @@
+@media (max-width:768px){
+
+.list-group{
+padding-top:20px !important;
+}
+
+.col-3,
+.col-9{
+width:100% !important;
+}
+
+.navbar-brand{
+font-size:14px;
+}
+
+.navbar-brand img{
+width:40px;
+}
+
+form{
+margin-top:10px;
+width:100%;
+}
+
+input{
+width:100%;
+}
+
+img{
+max-width:100%;
+height:auto;
+}
+
+footer{
+margin-top:50px !important;
+}
+
+}
