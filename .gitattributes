@@ -1,1 +1,2 @@
-musicBoxFE/** linguist-vendored
+musicBoxFE/**/*.html linguist-detectable=false
+musicBoxFE/**/*.css linguist-detectable=false
