@@ -49,7 +49,7 @@ createApp({
         .catch((error) => console.error(error));
     },
     loadMusiciansByGenre() {
-      axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/byGenre/" + this.inputGenre)
+      axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians/byGenre/" + encodeURIComponent(this.inputGenre))
         .then((response) => {
           this.musicians = response.data;
         })
