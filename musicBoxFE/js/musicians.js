@@ -83,7 +83,7 @@ createApp({
     populateForm(musician) {
       this.formMusician.id = musician.id;
       this.formMusician.name = musician.name;
-      this.formMusician.genre = musician.genre;
+      this.formMusician.genre = this.genres.find(g => g.id === musician.genre.id);
     },
     // funkcija počisti obrazec, dodali smo ga k funkciji PostMusician, da se obrazec počisti, potem ko se shrani nov glasbenik
     cleanForm() {
