@@ -34,7 +34,7 @@ createApp({
                 .catch((error) => console.error(error));
         },
         loadMusicians() {
-            axios.get("http://localhost:8080/musicians/getAll")
+            axios.get("http://localhost:8080/musicians")
                 // arrow notation: response, ki mi ga vrne axios.get, mi omogoča da preberem podatke, ki me zanimajo (response.data) in jih vrnem v lokalno spremenljivko 'musicians' (kot bi mi napisali notri)
                 .then((response) => {
                     this.musicians = response.data;
@@ -42,7 +42,7 @@ createApp({
                 .catch((error) => console.error(error));
         },
         loadGenres() {
-            axios.get("http://localhost:8080/genres/getAll")
+            axios.get("http://localhost:8080/genres")
                 .then((response) => {
                     this.genres = response.data;
                 })
@@ -86,7 +86,6 @@ createApp({
             this.formAlbum.name = '';
             this.formAlbum.genre = '';
             this.formAlbum.musician = '';
-
         }
     }
 }).mount('#albums');
