@@ -77,8 +77,8 @@ createApp({
         populateForm(album) {
             this.formAlbum.id = album.id;
             this.formAlbum.name = album.name;
-            this.formAlbum.genre = album.genre;
-            this.formAlbum.musician = album.musician;
+            this.formAlbum.genre = this.genres.find(g => g.id === album.genre.id);
+            this.formAlbum.musician = this.musicians.find(m => m.id === album.musician.id);
         },
         // funkcija počisti obrazec, dodali smo ga k funkciji PostAlbum, da se obrazec počisti, potem ko se shrani nov glasbenik
         cleanForm() {
