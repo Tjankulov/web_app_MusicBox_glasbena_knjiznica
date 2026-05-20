@@ -17,14 +17,23 @@ createApp({
     }
   },
   created() {
-    this.loadMusicians();
     this.loadGenres();
-    this.loadMusiciansByGenre();
+
+    const genre =
+      new URLSearchParams(window.location.search)
+      .get('genre');
+
+    if (genre) {
+      this.inputGenre = genre;
+      this.loadMusiciansByGenre();
+    } else {
+      this.loadMusicians();
+    }
   },
   methods: {
     // vrne seznam glasbenikov
     loadMusicians() {
-      axios.get("http://localhost:8080/musicians/getAll")
+      axios.get("http://localhost:8080/musicians")
         // arrow notation: response, ki mi ga vrne axios.get, mi omogoča da preberem podatke, ki me zanimajo (response.data) in jih vrnem v lokalno spremenljivko 'musicians' (kot bi mi napisali notri)
         .then((response) => {
           this.musicians = response.data;
@@ -32,7 +41,7 @@ createApp({
         .catch((error) => console.error(error));
     },
     loadGenres() {
-      axios.get("http://localhost:8080/genres/getAll")
+      axios.get("http://localhost:8080/genres")
         .then((response) => {
           this.genres = response.data;
         })
@@ -47,16 +56,24 @@ createApp({
     },
     // za formular, kjer uporabnik vnese podatke za novega glasbenika
     postMusician() {
-      axios.post("http://localhost:8080/musicians/create", this.formMusician)
-        .then((response) => {
-          this.loadMusicians();
-          this.formMusician.name = '';
-          this.formMusician.genre = null;
-        })
-        .catch((error) => console.error(error));
+      if (this.formMusician.id) {
+        axios.put("http://localhost:8080/musicians/" + this.formMusician.id, this.formMusician)
+          .then((response) => {
+            this.loadMusicians();
+            this.cleanForm();
+          })
+          .catch((error) => console.error(error));
+      } else {
+        axios.post("http://localhost:8080/musicians", this.formMusician)
+          .then((response) => {
+            this.loadMusicians();
+            this.cleanForm();
+          })
+          .catch((error) => console.error(error));
+      }
     },
     deleteMusician(id) {
-      axios.delete("http://localhost:8080/musicians/delete/" + id)
+      axios.delete("http://localhost:8080/musicians/" + id)
         .then((response) => {
           this.loadMusicians();
         })
@@ -73,7 +90,6 @@ createApp({
       this.formMusician.id = null;
       this.formMusician.name = '';
       this.formMusician.genre = '';
-
     }
   }
 }).mount('#musicians');
