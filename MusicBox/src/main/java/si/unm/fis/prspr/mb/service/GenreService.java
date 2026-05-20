@@ -4,39 +4,47 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import si.unm.fis.prspr.mb.entity.Genre;
-import si.unm.fis.prspr.mb.repository.GenreRepository;
+import si.unm.fis.prspr.mb.entity.Musician;
+import si.unm.fis.prspr.mb.repository.MusicianRepository;
 
 @Service
-public class GenreService {
+public class MusicianService {
 
-    private final GenreRepository genreRepository;
+    private final MusicianRepository musicianRepository;
 
-    public GenreService(GenreRepository genreRepository) {
-        this.genreRepository = genreRepository;
+    public MusicianService(MusicianRepository musicianRepository) {
+        this.musicianRepository = musicianRepository;
     }
 
-    public Genre createGenre(Genre genre) {
-        return genreRepository.save(genre);
+    public Musician createMusician(Musician musician) {
+        return musicianRepository.save(musician);
     }
 
-    public List<Genre> getAllGenres() {
-        return genreRepository.findAll();
+    public List<Musician> getAllMusicians() {
+        return musicianRepository.findAll();
     }
 
-    public Genre getGenreById(int id) {
-        return genreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Zvrst z ID " + id + " ne obstaja."));
+    public Musician getMusicianById(int id) {
+        return musicianRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Glasbenik z ID " + id + " ne obstaja."));
     }
 
-    public Genre updateGenre(int id, Genre genre) {
-        Genre existing = genreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Zvrst z ID " + id + " ne obstaja."));
-        existing.setName(genre.getName());
-        return genreRepository.save(existing);
+    public List<Musician> getMusiciansByGenre(String genreName) {
+        if (genreName == null || genreName.isEmpty()) {
+            return musicianRepository.findAll();
+        }
+        return musicianRepository.findByGenreName(genreName);
     }
 
-    public void deleteGenre(int id) {
-        genreRepository.deleteById(id);
+    public Musician updateMusician(int id, Musician musician) {
+        Musician existing = musicianRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Glasbenik z ID " + id + " ne obstaja."));
+        existing.setName(musician.getName());
+        existing.setGenre(musician.getGenre());
+        return musicianRepository.save(existing);
+    }
+
+    public void deleteMusician(int id) {
+        musicianRepository.deleteById(id);
     }
 }
