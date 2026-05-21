@@ -6,6 +6,9 @@ createApp({
       genres: [],
       inputGenre: '',
       musicians: [],
+      currentPage: 0,
+      totalPages: 0,
+      pageSize: 10,
       formMusician: {
         id: null,
         name: '',
@@ -13,43 +16,34 @@ createApp({
           name: '',
         }
       },
-      options: [],
+      options: []
     }
   },
   created() {
+    this.loadMusicians();
     this.loadGenres();
-
-    const genre =
-      new URLSearchParams(window.location.search)
-      .get('genre');
-
-    if (genre) {
-      this.inputGenre = genre;
-      this.loadMusiciansByGenre();
-    } else {
-      this.loadMusicians();
-    }
+    this.loadMusiciansByGenre();
   },
   methods: {
-    // vrne seznam glasbenikov
-    loadMusicians() {
-      // klične online backend
-      axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians")
-        // arrow notation: response, ki mi ga vrne axios.get, mi omogoča da preberem podatke, ki me zanimajo (response.data) in jih vrnem v lokalno spremenljivko 'musicians' (kot bi mi napisali notri)
+    // vrne seznam glasbenikov (plus paginacija)
+    loadMusicians(page = 0) {
+      axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians?page=" + page + "&size=" + this.pageSize)
         .then((response) => {
-          this.musicians = response.data;
+          this.musicians = response.data.content;
+          this.currentPage = response.data.number;
+          this.totalPages = response.data.totalPages;
         })
         .catch((error) => console.error(error));
     },
     loadGenres() {
-      axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres")
+      axios.get("http://localhost:8080/genres/getAll")
         .then((response) => {
           this.genres = response.data;
         })
         .catch((error) => console.error(error));
     },
     loadMusiciansByGenre() {
-      axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians/byGenre/" + encodeURIComponent(this.inputGenre))
+      axios.get("http://localhost:8080/musicians/byGenre/" + this.inputGenre)
         .then((response) => {
           this.musicians = response.data;
         })
@@ -57,24 +51,16 @@ createApp({
     },
     // za formular, kjer uporabnik vnese podatke za novega glasbenika
     postMusician() {
-      if (this.formMusician.id) {
-        axios.put("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians/" + this.formMusician.id, this.formMusician)
-          .then((response) => {
-            this.loadMusicians();
-            this.cleanForm();
-          })
-          .catch((error) => console.error(error));
-      } else {
-        axios.post("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians", this.formMusician)
-          .then((response) => {
-            this.loadMusicians();
-            this.cleanForm();
-          })
-          .catch((error) => console.error(error));
-      }
+      axios.post("http://localhost:8080/musicians/create", this.formMusician)
+        .then((response) => {
+          this.loadMusicians();
+          this.formMusician.name = '';
+          this.formMusician.genre = null;
+        })
+        .catch((error) => console.error(error));
     },
     deleteMusician(id) {
-      axios.delete("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians/" + id)
+      axios.delete("http://localhost:8080/musicians/delete/" + id)
         .then((response) => {
           this.loadMusicians();
         })
@@ -84,13 +70,25 @@ createApp({
     populateForm(musician) {
       this.formMusician.id = musician.id;
       this.formMusician.name = musician.name;
-      this.formMusician.genre = this.genres.find(g => g.id === musician.genre.id);
+      this.formMusician.genre = musician.genre;
     },
     // funkcija počisti obrazec, dodali smo ga k funkciji PostMusician, da se obrazec počisti, potem ko se shrani nov glasbenik
     cleanForm() {
       this.formMusician.id = null;
       this.formMusician.name = '';
       this.formMusician.genre = '';
-    }
+
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages - 1) {
+        this.loadMusicians(this.currentPage + 1);
+      }
+    },
+
+    previousPage() {
+      if (this.currentPage > 0) {
+        this.loadMusicians(this.currentPage - 1);
+      }
+    },
   }
 }).mount('#musicians');
