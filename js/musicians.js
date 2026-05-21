@@ -22,9 +22,18 @@ createApp({
     }
   },
   created() {
-    this.loadMusicians();
     this.loadGenres();
-  },
+
+    const params = new URLSearchParams(window.location.search);
+    const genre = params.get("genre");
+
+    if (genre) {
+      this.inputGenre = genre;
+      this.loadMusiciansByGenre();
+    } else {
+      this.loadMusicians();
+  }
+},
   
   methods: {
     // Naloži vse glasbenike (paginacija)
