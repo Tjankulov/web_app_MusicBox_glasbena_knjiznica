@@ -7,7 +7,6 @@ createApp({
   data() {
     return {
       genres: [],
-      inputGenre: '',
       musicians: [],
 
       currentPage: 0,
@@ -21,6 +20,7 @@ createApp({
       }
     }
   },
+
   created() {
     this.loadGenres();
 
@@ -28,14 +28,14 @@ createApp({
     const genre = params.get("genre");
 
     if (genre) {
-      this.inputGenre = genre;
-      this.loadMusiciansByGenre();
+      this.loadMusiciansByGenre(genre);
     } else {
       this.loadMusicians();
-  }
-},
-  
+    }
+  },
+
   methods: {
+
     // Naloži vse glasbenike (paginacija)
     loadMusicians(page = 0) {
       axios
@@ -48,7 +48,6 @@ createApp({
         .catch(console.error);
     },
 
-
     // Naloži zvrsti
     loadGenres() {
       axios
@@ -56,20 +55,18 @@ createApp({
         .then((response) => {
           this.genres = response.data;
         })
-
         .catch(console.error);
     },
 
-
-    // Iskanje po zvrsti
-    loadMusiciansByGenre() {
-      if (this.inputGenre.trim() === '') {
+    // Iskanje glasbenikov po zvrsti iz URL-ja
+    loadMusiciansByGenre(genre) {
+      if (genre.trim() === '') {
         this.loadMusicians(0);
         return;
       }
 
       axios
-        .get(`${API}/musicians/byGenre/${encodeURIComponent(this.inputGenre)}`)
+        .get(`${API}/musicians/byGenre/${encodeURIComponent(genre)}`)
         .then((response) => {
           this.musicians = response.data;
           this.currentPage = 0;
@@ -78,8 +75,7 @@ createApp({
         .catch(console.error);
     },
 
-
-    // Dodaj
+    // Dodaj ali posodobi glasbenika
     postMusician() {
       axios
         .post(`${API}/musicians`, this.formMusician)
@@ -90,7 +86,7 @@ createApp({
         .catch(console.error);
     },
 
-    // Briši
+    // Briši glasbenika
     deleteMusician(id) {
       axios
         .delete(`${API}/musicians/${id}`)
@@ -100,7 +96,7 @@ createApp({
         .catch(console.error);
     },
 
-    // Izpolni obrazec
+    // Izpolni obrazec za spremembo
     populateForm(musician) {
       this.formMusician = {
         id: musician.id,
@@ -118,18 +114,19 @@ createApp({
       };
     },
 
-    // Naprej
+    // Naslednja stran
     nextPage() {
       if (this.currentPage < this.totalPages - 1) {
         this.loadMusicians(this.currentPage + 1);
       }
     },
 
-    // Nazaj
+    // Prejšnja stran
     previousPage() {
       if (this.currentPage > 0) {
         this.loadMusicians(this.currentPage - 1);
       }
     }
   }
+
 }).mount('#musicians');
