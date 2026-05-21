@@ -16,14 +16,14 @@ createApp({
   methods: {
     // vrne seznam zvrsti
     loadGenres() {
-      axios.get("http://localhost:8080/genres/getAll")
+      axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres")
         .then((response) => {
           this.genres = response.data;
         })
         .catch((error) => console.error(error));
     },
     deleteGenre(id) {
-      axios.delete("http://localhost:8080/genres/delete/"+id)
+      axios.delete("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres/" + id)
         .then((response) => {
           this.loadGenres();
           this.cleanForm();
@@ -32,12 +32,21 @@ createApp({
     },
     // za formular, kjer uporabnik vnese podatke za novo zvrst
     postGenre() {
-      axios.post("http://localhost:8080/genres/create", this.formGenre)
-        .then((response) => {
-          this.loadGenres();
-          this.cleanForm();
-        })
-        .catch((error) => console.error(error));
+      if (this.formGenre.id) {
+        axios.put("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres/" + this.formGenre.id, this.formGenre)
+          .then((response) => {
+            this.loadGenres();
+            this.cleanForm();
+          })
+          .catch((error) => console.error(error));
+      } else {
+        axios.post("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres", this.formGenre)
+          .then((response) => {
+            this.loadGenres();
+            this.cleanForm();
+          })
+          .catch((error) => console.error(error));
+      }
     },
     // s klikom na polje v tabeli, se izpolni tudi formular z enakimi podatki, ki ga lahko spremenimo
     populateForm(genre) {
@@ -51,4 +60,3 @@ createApp({
     }
   }
 }).mount('#genres');
-
