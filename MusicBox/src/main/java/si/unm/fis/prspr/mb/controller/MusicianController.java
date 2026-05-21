@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import si.unm.fis.prspr.mb.entity.Musician;
 import si.unm.fis.prspr.mb.service.MusicianService;
 
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.RequestParam;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/musicians")
@@ -33,8 +36,10 @@ public class MusicianController {
     }
 
     @GetMapping
-    public List<Musician> getAllMusicians() {
-        return musicianService.getAllMusicians();
+    public Page<Musician> getAllMusicians(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return musicianService.getMusiciansPaginated(page, size);
     }
 
     @GetMapping("/{id}")
