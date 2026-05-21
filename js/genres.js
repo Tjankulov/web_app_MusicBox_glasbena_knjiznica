@@ -24,7 +24,7 @@ createApp({
     },
     deleteGenre(id) {
       axios.delete("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres/" + id)
-        .then((response) => {
+        .then(() => {
           this.loadGenres();
           this.cleanForm();
         })
