@@ -9,7 +9,7 @@ import si.unm.fis.prspr.mb.entity.Musician;
 
 @Repository
 public interface MusicianRepository extends JpaRepository<Musician, Integer> {
-	List<Musician> findByGenreName(String genreName);
+	List<Musician> findByGenreNameIgnoreCase(String genreName);
 }
 
 // JpaRepository - Java Persistence Api (ogrodje za mapiranje Java objektov v tabele v relacijski podatkovni bazi)
