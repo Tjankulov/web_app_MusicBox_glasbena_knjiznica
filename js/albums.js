@@ -33,21 +33,19 @@ createApp({
         loadAlbums(page = 0) {
             axios.get(`${API}/albums?page=${page}&size=${this.pageSize}`)
                 .then((response) => {
-
                     if (response.data.content) {
                         this.albums = response.data.content;
                         this.currentPage = response.data.number;
                         this.totalPages = response.data.totalPages;
-
                     } else {
                         this.albums = response.data;
                         this.currentPage = 0;
                         this.totalPages = 1;
                     }
-
-        })
-        .catch(console.error);
-},
+                })
+                .catch(console.error);
+        },
+        
         loadMusicians() {
             axios.get(`${API}/musicians?page=0&size=100`)
                 .then((response) => {
