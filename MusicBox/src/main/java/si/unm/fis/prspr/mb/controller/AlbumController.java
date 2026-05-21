@@ -1,6 +1,6 @@
 package si.unm.fis.prspr.mb.controller;
 
-import java.util.List;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import si.unm.fis.prspr.mb.entity.Album;
 import si.unm.fis.prspr.mb.service.AlbumService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -33,8 +36,11 @@ public class AlbumController {
     }
 
     @GetMapping
-    public List<Album> getAllAlbums() {
-        return albumService.getAllAlbums();
+    public Page<Album> getAllAlbums(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        return albumService.getAlbumsPaginated(page, size);
     }
 
     @GetMapping("/{id}")
