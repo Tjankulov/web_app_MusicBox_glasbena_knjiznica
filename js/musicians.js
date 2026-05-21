@@ -67,11 +67,11 @@ createApp({
         this.loadMusicians(0);
         return;
       }
+
       axios
-        .get(`${API}/musicians/byGenre/${this.inputGenre}`)
+        .get(`${API}/musicians/byGenre/${encodeURIComponent(this.inputGenre)}`)
         .then((response) => {
           this.musicians = response.data;
-          // ker backend tu ne vrača page objekta
           this.currentPage = 0;
           this.totalPages = 1;
         })
