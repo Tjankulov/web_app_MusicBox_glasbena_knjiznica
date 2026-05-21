@@ -3,11 +3,13 @@ import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 const API = "https://web-app-musicbox-glasbena-knjiznica-1.onrender.com";
 
 createApp({
+
   data() {
     return {
       genres: [],
       inputGenre: '',
       musicians: [],
+
       currentPage: 0,
       totalPages: 0,
       pageSize: 10,
@@ -19,16 +21,16 @@ createApp({
       }
     }
   },
-
   created() {
     this.loadMusicians();
     this.loadGenres();
   },
-
+  
   methods: {
-
+    // Naloži vse glasbenike (paginacija)
     loadMusicians(page = 0) {
-      axios.get(`${API}/musicians?page=${page}&size=${this.pageSize}`)
+      axios
+        .get(`${API}/musicians?page=${page}&size=${this.pageSize}`)
         .then((response) => {
           this.musicians = response.data.content;
           this.currentPage = response.data.number;
@@ -37,24 +39,41 @@ createApp({
         .catch(console.error);
     },
 
+
+    // Naloži zvrsti
     loadGenres() {
-      axios.get(`${API}/genres`)
+      axios
+        .get(`${API}/genres`)
         .then((response) => {
           this.genres = response.data;
         })
+
         .catch(console.error);
     },
 
+
+    // Iskanje po zvrsti
     loadMusiciansByGenre() {
-      axios.get(`${API}/musicians/byGenre/${this.inputGenre}`)
+      if (this.inputGenre.trim() === '') {
+        this.loadMusicians(0);
+        return;
+      }
+      axios
+        .get(`${API}/musicians/byGenre/${this.inputGenre}`)
         .then((response) => {
           this.musicians = response.data;
+          // ker backend tu ne vrača page objekta
+          this.currentPage = 0;
+          this.totalPages = 1;
         })
         .catch(console.error);
     },
 
+
+    // Dodaj
     postMusician() {
-      axios.post(`${API}/musicians`, this.formMusician)
+      axios
+        .post(`${API}/musicians`, this.formMusician)
         .then(() => {
           this.loadMusicians(this.currentPage);
           this.cleanForm();
@@ -62,14 +81,17 @@ createApp({
         .catch(console.error);
     },
 
+    // Briši
     deleteMusician(id) {
-      axios.delete(`${API}/musicians/${id}`)
+      axios
+        .delete(`${API}/musicians/${id}`)
         .then(() => {
           this.loadMusicians(this.currentPage);
         })
         .catch(console.error);
     },
 
+    // Izpolni obrazec
     populateForm(musician) {
       this.formMusician = {
         id: musician.id,
@@ -78,6 +100,7 @@ createApp({
       };
     },
 
+    // Počisti obrazec
     cleanForm() {
       this.formMusician = {
         id: null,
@@ -86,17 +109,18 @@ createApp({
       };
     },
 
+    // Naprej
     nextPage() {
       if (this.currentPage < this.totalPages - 1) {
         this.loadMusicians(this.currentPage + 1);
       }
     },
 
+    // Nazaj
     previousPage() {
       if (this.currentPage > 0) {
         this.loadMusicians(this.currentPage - 1);
       }
     }
   }
-
 }).mount('#musicians');
