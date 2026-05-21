@@ -64,9 +64,7 @@ createApp({
         this.loadMusicians(0);
         return;
       }
-
-      axios
-        .get(`${API}/musicians/byGenre/${encodeURIComponent(genre)}`)
+      axios.get(`${API}/musicians/byGenre/${encodeURIComponent(genre.trim())}`)
         .then((response) => {
           this.musicians = response.data;
           this.currentPage = 0;
