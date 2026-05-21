@@ -2,121 +2,215 @@
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>MusicBox Glasbeniki</title>
+
     <!-- favicon -->
     <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+
     <!-- bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <!-- poppers -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+
     <!-- axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <!-- vue -->
     <script type="module" src="js/musicians.js"></script>
 </head>
 
 <!-- header -->
+<body
+    style="background-color:black;"
+    class="d-flex flex-column min-vh-100">
 
-<body style="background-color: black">
     <!-- poveži z musicians.js-->
-    <div class="body-wrapper" id="musicians">
+    <div
+        class="body-wrapper d-flex flex-column flex-grow-1"
+        id="musicians">
         <header>
-            <nav class="navbar fixed-top" style="background-color: rgb(240, 240, 81);">
-                <div class="container-fluid">
-                    <a class="navbar-brand"
-                        style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif"
-                        href="index.html"><img src="img/logo.png" style="padding-right: 10px;">Music Box - glasbena knjižnica</a>
+            <nav
+                class="navbar navbar-expand-lg sticky-top"
+                style="background-color: rgb(240,240,81);">
+                <div class="container">
+                    <a
+                        class="navbar-brand d-flex align-items-center"
+                        href="index.html"
+                        style="font-family: Lucida Sans, Geneva, Verdana, sans-serif;">
+                        <img
+                            src="img/logo.png"
+                            class="me-2"
+                            style="max-height:50px;">
+                        Music Box - glasbena knjižnica
+                    </a>
                 </div>
             </nav>
         </header>
 
         <!-- main -->
-        <main>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-3">
-                        <!-- Meni seznamov -->
-                        <div class="list-group" style="padding-top: 100px;">
-                            <a href="musicians.html" class="list-group-item list-group-item-action active"
-                                aria-current="true"
-                                style="background-color: rgb(240, 240, 81); border-color: black; color: black;">
-                                Glasbeniki
-                            </a>
-                            <a href="genres.html" class="list-group-item list-group-item-action"
-                                style="background-color: black; border-color: rgb(240, 240, 81); color:rgb(240, 240, 81);">Zvrsti</a>
-                            <a href="albums.html" class="list-group-item list-group-item-action"
-                                style="background-color: black; border-color: rgb(240, 240, 81); color:rgb(240, 240, 81);">Albumi</a>
-                        </div>
-                        <img src="img/soundwaves.gif" style="float:right;">
+        <main class="container flex-grow-1">
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    <!-- Meni seznamov -->
+                    <div class="list-group pt-4">
+                        <a
+                            href="musicians.html"
+                            class="list-group-item list-group-item-action active"
+                            aria-current="true"
+                            style="background-color:rgb(240,240,81);border-color:black;color:black;">
+                            Glasbeniki
+                        </a>
+                        <a
+                            href="genres.html"
+                            class="list-group-item list-group-item-action"
+                            style="background-color:black;border-color:rgb(240,240,81);color:rgb(240,240,81);">
+                            Zvrsti
+                        </a>
+                        <a
+                            href="albums.html"
+                            class="list-group-item list-group-item-action"
+                            style="background-color:black;border-color:rgb(240,240,81);color:rgb(240,240,81);">
+                            Albumi
+                        </a>
                     </div>
-                    <!-- seznam glasbenikov -->
-                    <div class="col-9" style="padding-top: 100px;">
+                    <img
+                        src="img/soundwaves.gif"
+                        class="img-fluid mt-4">
+                </div>
+
+                <!-- seznam glasbenikov -->
+                <div class="col-12 col-md-9 pt-4">
+                    <div class="table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="background-color: black; color: rgb(240, 240, 81);">
-                                        Glasbenik</th>
-                                    <th scope="col" style="background-color: black; color: rgb(240, 240, 81);">Zvrst
+                                    <th
+                                        style="background-color:black;color:rgb(240,240,81)">
+                                        Glasbenik
                                     </th>
-                                    <th scope="col" style="background-color: black; color: rgb(240, 240, 81);">Izbris
+                                    <th
+                                        style="background-color:black;color:rgb(240,240,81)">
+                                        Zvrst
                                     </th>
-                                    <th scope="col" style="background-color: black; color: rgb(240, 240, 81);">Sprememba
+                                    <th
+                                        style="background-color:black;color:rgb(240,240,81)">
+                                        Izbris
+                                    </th>
+                                    <th
+                                        style="background-color:black;color:rgb(240,240,81)">
+                                        Sprememba
                                     </th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 <!-- glasbeniki -->
-                                <tr v-for="musician in musicians" :key="musician.id">
-                                    <td style="background-color: black; color: rgb(240, 240, 81);">
-                                        {{musician.name}}</td>
-                                    <td style="background-color: black; color: rgb(240, 240, 81);">
+                                <tr
+                                    v-for="musician in musicians"
+                                    :key="musician.id">
+                                    <td
+                                        style="background-color:black;color:rgb(240,240,81)">
+                                        {{musician.name}}
+                                    </td>
+                                    <td
+                                        style="background-color:black;color:rgb(240,240,81)">
                                         {{musician.genre.name}}
                                     </td>
-                                    <td style="background-color: black;"><button @click="deleteMusician(musician.id)"
-                                            type="button" class="btn btn-sm btn-outline-light"
-                                            style="border-color: rgb(240, 240, 81); color:rgb(240, 240, 81);">Izbriši</button>
+                                    <td
+                                        style="background-color:black">
+                                        <button
+                                            @click="deleteMusician(musician.id)"
+                                            type="button"
+                                            class="btn btn-sm btn-outline-light"
+                                            style="border-color:rgb(240,240,81);color:rgb(240,240,81)">
+                                            Izbriši
+                                        </button>
                                     </td>
-                                    <td style="background-color: black;"><button @click="populateForm(musician)"
-                                            type="button" class="btn btn-sm btn-secondary"
-                                            style="border-color: rgb(240, 240, 81); color:rgb(240, 240, 81);">Spremeni</button>
+                                    <td
+                                        style="background-color:black">
+                                        <button
+                                            @click="populateForm(musician)"
+                                            type="button"
+                                            class="btn btn-sm btn-secondary"
+                                            style="border-color:rgb(240,240,81);color:rgb(240,240,81)">
+                                            Spremeni
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <!-- dodajanje novega glasbenika -->
-                        <div class="col-9" style="padding-top: 30px;">
-                            <h4 style="color: rgb(240, 240, 81); padding-bottom: 20px;">Dodaj glasbenika</h4>
-                            <form>
-                                <div class="mb-3">
-                                    <label for="musicianName" class="form-label"
-                                        style="color: rgb(240, 240, 81);">Glasbenik</label>
-                                    <input v-model="formMusician.name" type="text" class="form-control"
-                                        id="musicianName" aria-describedby="nameHelp"
-                                        style="background-color: rgb(240, 240, 81);">
-                                    <div id="nameHelp" class="form-text"></div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="ZvrstSelect" class="form-label" style="color: rgb(240, 240, 81);">Zvrst
-                                        <p style="font-size: small; margin-bottom: 0px;">(če zvrsti ni na seznamu, jo
-                                            najprej dodaj v zavihku 'Zvrsti')</p>
-                                    </label>
-                                    <!-- povezava med vrednostjo spremenljivke v obrazcu in vrednostjo spremenljivke v vue kodi/ shrani se v pomnilniku računalnika pri vsakemu posebej -->
-                                    <select v-model="formMusician.genre" id="ZvrstSelect" class="form-select"
-                                        style="background-color: rgb(240, 240, 81);">
-                                        <option v-for="genre in genres" :value="genre" :key="genre.id">
-                                            {{genre.name}}
-                                        </option>
-                                    </select>
-                                </div>
-                            </form>
-                            <button @click="postMusician()" type="button" class="btn btn-outline-dark"
-                                style="background-color: yellow; margin-top: 10px;">Shrani</button>
-                            <button @click="cleanForm()" type="button" class="btn btn-outline-light"
-                                style="border-color: rgb(240, 240, 81); color:rgb(240, 240, 81); margin-left: 10px; margin-top: 10px;">Počisti
-                                obrazec</button>
+                    </div>
+
+                    <!-- dodajanje novega glasbenika -->
+                    <div class="pt-4">
+                        <h4
+                            style="color:rgb(240,240,81)">
+                            Dodaj glasbenika
+                        </h4>
+                        <form>
+                            <div class="mb-3">
+                                <label
+                                    for="musicianName"
+                                    class="form-label"
+                                    style="color:rgb(240,240,81)">
+                                    Glasbenik
+                                </label>
+                                <input
+                                    v-model="formMusician.name"
+                                    type="text"
+                                    class="form-control"
+                                    id="musicianName"
+                                    style="background-color:rgb(240,240,81)">
+                            </div>
+                            <div class="mb-3">
+                                <label
+                                    for="ZvrstSelect"
+                                    class="form-label"
+                                    style="color:rgb(240,240,81)">
+                                    Zvrst
+                                    <p
+                                        style="font-size:small;margin-bottom:0">
+                                        (če zvrsti ni na seznamu,
+                                        jo najprej dodaj v zavihku
+                                        'Zvrsti')
+                                    </p>
+                                </label>
+                                <!-- povezava med vrednostjo spremenljivke v obrazcu in vrednostjo spremenljivke v vue kodi/ shrani se v pomnilniku računalnika pri vsakemu posebej -->
+                                <select
+                                    v-model="formMusician.genre"
+                                    id="ZvrstSelect"
+                                    class="form-select"
+                                    style="background-color:rgb(240,240,81)">
+                                    <option
+                                        v-for="genre in genres"
+                                        :value="genre"
+                                        :key="genre.id">
+                                        {{genre.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </form>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button
+                                @click="postMusician()"
+                                type="button"
+                                class="btn btn-outline-dark"
+                                style="background-color:yellow">
+                                Shrani
+                            </button>
+                            <button
+                                @click="cleanForm()"
+                                type="button"
+                                class="btn btn-outline-light"
+                                style="border-color:rgb(240,240,81);color:rgb(240,240,81)">
+                                Počisti obrazec
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -124,19 +218,23 @@
         </main>
 
         <!-- footer -->
-        <footer class="container-fluid" style="margin-top: 400px;">
+        <footer class="mt-auto">
             <!-- Copyright -->
-            <div class="text-center p-3" style="background-color: rgb(61, 57, 57); color: black;">© 2024 Copyright: PRA
-                NOO - FIŠ NM
+            <div
+                class="text-center py-3 w-100"
+                style="
+                background-color:rgb(61,57,57);
+                color:black;">
+                © 2024 Copyright: PRA NOO - FIŠ NM
             </div>
         </footer>
-        <!-- poppers -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-        <!-- bootstrap -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-            crossorigin="anonymous"></script>
     </div>
-</body>
 
+    <!-- bootstrap -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous">
+    </script>
+</body>
 </html>
