@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import si.unm.fis.prspr.mb.entity.Musician;
 import si.unm.fis.prspr.mb.repository.MusicianRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 @Service
 public class MusicianService {
 
@@ -46,5 +49,9 @@ public class MusicianService {
 
     public void deleteMusician(int id) {
         musicianRepository.deleteById(id);
+    }
+    
+    public Page<Musician> getMusiciansPaginated(int page, int size) {
+        return musicianRepository.findAll(PageRequest.of(page, size));
     }
 }
