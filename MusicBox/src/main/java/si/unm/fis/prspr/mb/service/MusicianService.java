@@ -36,7 +36,7 @@ public class MusicianService {
         if (genreName == null || genreName.isEmpty()) {
             return musicianRepository.findAll();
         }
-        return musicianRepository.findByGenreName(genreName);
+        return musicianRepository.findByGenreNameIgnoreCase(genreName);
     }
 
     public Musician updateMusician(int id, Musician musician) {
