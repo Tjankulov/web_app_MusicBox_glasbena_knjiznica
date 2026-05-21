@@ -1,91 +1,107 @@
 import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 
+const API = "https://web-app-musicbox-glasbena-knjiznica-1.onrender.com";
+
 createApp({
     data() {
         return {
             genres: [],
             musicians: [],
             albums: [],
+
+            currentPage: 0,
+            totalPages: 0,
+            pageSize: 10,
+
             formAlbum: {
                 id: null,
                 name: '',
-                genre: {
-                    name: '',
-                },
-                musician: {
-                    name: ''
-                }
-            },
-            options: []
+                genre: null,
+                musician: null
+            }
         }
     },
+
     created() {
-        this.loadMusicians();
-        this.loadGenres();
         this.loadAlbums();
+        this.loadGenres();
+        this.loadMusicians();
     },
+
     methods: {
-        // vrne seznam glasbenikov
-        loadAlbums() {
-            axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums")
+
+        loadAlbums(page = 0) {
+            axios.get(`${API}/albums?page=${page}&size=${this.pageSize}`)
                 .then((response) => {
-                    this.albums = response.data;
+                    this.albums = response.data.content;
+                    this.currentPage = response.data.number;
+                    this.totalPages = response.data.totalPages;
                 })
-                .catch((error) => console.error(error));
+                .catch(console.error);
         },
+
         loadMusicians() {
-            axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/musicians")
-                // arrow notation: response, ki mi ga vrne axios.get, mi omogoča da preberem podatke, ki me zanimajo (response.data) in jih vrnem v lokalno spremenljivko 'musicians' (kot bi mi napisali notri)
+            axios.get(`${API}/musicians?page=0&size=100`)
                 .then((response) => {
-                    this.musicians = response.data;
+                    this.musicians = response.data.content;
                 })
-                .catch((error) => console.error(error));
+                .catch(console.error);
         },
+
         loadGenres() {
-            axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres")
+            axios.get(`${API}/genres`)
                 .then((response) => {
                     this.genres = response.data;
                 })
-                .catch((error) => console.error(error));
+                .catch(console.error);
         },
-        // za formular, kjer uporabnik vnese podatke za nov album
+
         postAlbum() {
-            if (this.formAlbum.id) {
-                axios.put("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums/" + this.formAlbum.id, this.formAlbum)
-                    .then((response) => {
-                        this.loadAlbums();
-                        this.cleanForm();
-                    })
-                    .catch((error) => console.error(error));
-            } else {
-                axios.post("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums", this.formAlbum)
-                    .then((response) => {
-                        this.loadAlbums();
-                        this.cleanForm();
-                    })
-                    .catch((error) => console.error(error));
+            axios.post(`${API}/albums`, this.formAlbum)
+                .then(() => {
+                    this.loadAlbums(this.currentPage);
+                    this.cleanForm();
+                })
+                .catch(console.error);
+        },
+
+        deleteAlbum(id) {
+            axios.delete(`${API}/albums/${id}`)
+                .then(() => {
+                    this.loadAlbums(this.currentPage);
+                })
+                .catch(console.error);
+        },
+
+        populateForm(album) {
+            this.formAlbum = {
+                id: album.id,
+                name: album.name,
+                genre: album.genre,
+                musician: album.musician
+            };
+        },
+
+        cleanForm() {
+            this.formAlbum = {
+                id: null,
+                name: '',
+                genre: null,
+                musician: null
+            };
+        },
+
+        nextPage() {
+            if (this.currentPage < this.totalPages - 1) {
+                this.loadAlbums(this.currentPage + 1);
             }
         },
-        deleteAlbum(id) {
-            axios.delete("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/albums/" + id)
-                .then((response) => {
-                    this.loadAlbums();
-                })
-                .catch((error) => console.error(error));
-        },
-        // s klikom na polje v tabeli, se izpolni tudi formular z enakimi podatki, ki ga lahko spremenimo
-        populateForm(album) {
-            this.formAlbum.id = album.id;
-            this.formAlbum.name = album.name;
-            this.formAlbum.genre = this.genres.find(g => g.id === album.genre.id);
-            this.formAlbum.musician = this.musicians.find(m => m.id === album.musician.id);
-        },
-        // funkcija počisti obrazec, dodali smo ga k funkciji PostAlbum, da se obrazec počisti, potem ko se shrani nov glasbenik
-        cleanForm() {
-            this.formAlbum.id = null;
-            this.formAlbum.name = '';
-            this.formAlbum.genre = '';
-            this.formAlbum.musician = '';
+
+        previousPage() {
+            if (this.currentPage > 0) {
+                this.loadAlbums(this.currentPage - 1);
+            }
         }
     }
+
 }).mount('#albums');
