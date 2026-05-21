@@ -2,6 +2,7 @@ package si.unm.fis.prspr.mb.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,13 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import si.unm.fis.prspr.mb.entity.Musician;
 import si.unm.fis.prspr.mb.service.MusicianService;
-
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -42,14 +41,14 @@ public class MusicianController {
         return musicianService.getMusiciansPaginated(page, size);
     }
 
-    @GetMapping("/{id}")
-    public Musician getMusicianById(@PathVariable int id) {
-        return musicianService.getMusicianById(id);
-    }
-
     @GetMapping("/byGenre/{genreName}")
     public List<Musician> getMusiciansByGenre(@PathVariable String genreName) {
         return musicianService.getMusiciansByGenre(genreName);
+    }
+
+    @GetMapping("/{id}")
+    public Musician getMusicianById(@PathVariable int id) {
+        return musicianService.getMusicianById(id);
     }
 
     @PutMapping("/{id}")
