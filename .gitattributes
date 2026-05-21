@@ -1,2 +1,3 @@
-musicBoxFE/**/*.html linguist-detectable=false
-musicBoxFE/**/*.css linguist-detectable=false
+musicBoxFE/*.html linguist-detectable=false
+musicBoxFE/*.css linguist-detectable=false
+musicBoxFE/*.js linguist-detectable=false
