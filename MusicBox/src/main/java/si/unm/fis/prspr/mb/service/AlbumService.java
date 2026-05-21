@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import si.unm.fis.prspr.mb.entity.Album;
 import si.unm.fis.prspr.mb.repository.AlbumRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 @Service
 public class AlbumService {
 
@@ -40,5 +43,9 @@ public class AlbumService {
 
     public void deleteAlbum(int id) {
         albumRepository.deleteById(id);
+    }
+    
+    public Page<Album> getAlbumsPaginated(int page, int size) {
+        return albumRepository.findAll(PageRequest.of(page, size));
     }
 }
