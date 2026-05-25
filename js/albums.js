@@ -9,6 +9,9 @@ createApp({
             musicians: [],
             albums: [],
 
+            loading: false,
+            errorMessage: '',
+
             currentPage: 0,
             totalPages: 0,
             pageSize: 10,
@@ -31,6 +34,9 @@ createApp({
     methods: {
 
         loadAlbums(page = 0) {
+            this.loading = true;
+            this.errorMessage = '';
+
             axios.get(`${API}/albums?page=${page}&size=${this.pageSize}`)
                 .then((response) => {
                     if (response.data.content) {
@@ -43,7 +49,13 @@ createApp({
                         this.totalPages = 1;
                     }
                 })
-                .catch(console.error);
+                .catch((error) => {
+                    console.error(error);
+                    this.errorMessage = 'Podatkov trenutno ni mogoče naložiti. Strežnik se morda še zaganja.';
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
         },
         
         loadMusicians() {
@@ -109,5 +121,4 @@ createApp({
             }
         }
     }
-
 }).mount('#albums');
