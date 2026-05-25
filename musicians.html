@@ -28,102 +28,209 @@
 
     <!-- poveži z musicians.js-->
     <div class="body-wrapper d-flex flex-column flex-grow-1" id="musicians">
+
         <header>
+
             <nav class="navbar navbar-expand-lg sticky-top" style="background-color: rgb(240,240,81);">
+
                 <div class="container">
-                    <a class="navbar-brand d-flex align-items-center" href="index.html"
+
+                    <a class="navbar-brand d-flex align-items-center"
+                        href="index.html"
                         style="font-family: Lucida Sans, Geneva, Verdana, sans-serif;">
-                        <img src="img/logo.png" class="me-2" style="max-height:50px;">
+
+                        <img src="img/logo.png"
+                            class="me-2"
+                            style="max-height:50px;">
+
                         Music Box - glasbena knjižnica
+
                     </a>
+
                     <form action="musicians.html" method="GET" class="d-flex ms-auto">
+
                         <input
                             name="genre"
                             class="form-control me-2"
                             type="search"
                             placeholder="🎧 Išči po zvrsti ...">
+
                         <button class="btn btn-dark" type="submit">
+
                             Išči
+
                         </button>
+
                     </form>
+
                 </div>
+
             </nav>
+
         </header>
 
         <!-- main -->
+
         <main class="container flex-grow-1">
+
             <div class="row">
+
                 <div class="col-12 col-md-3">
+
                     <!-- Meni seznamov -->
+
                     <div class="list-group pt-4">
-                        <a href="musicians.html" class="list-group-item list-group-item-action active"
+
+                        <a href="musicians.html"
+                            class="list-group-item list-group-item-action active"
                             aria-current="true"
                             style="background-color:rgb(240,240,81);border-color:black;color:black;">
+
                             Glasbeniki
+
                         </a>
-                        <a href="genres.html" class="list-group-item list-group-item-action"
+
+                        <a href="genres.html"
+                            class="list-group-item list-group-item-action"
                             style="background-color:black;border-color:rgb(240,240,81);color:rgb(240,240,81);">
+
                             Zvrsti
+
                         </a>
-                        <a href="albums.html" class="list-group-item list-group-item-action"
+
+                        <a href="albums.html"
+                            class="list-group-item list-group-item-action"
                             style="background-color:black;border-color:rgb(240,240,81);color:rgb(240,240,81);">
+
                             Albumi
+
                         </a>
+
                     </div>
-                    <img src="img/soundwaves.gif" class="img-fluid mt-4">
+
+                    <img src="img/soundwaves.gif"
+                        class="img-fluid mt-4">
+
                 </div>
 
                 <!-- seznam glasbenikov -->
+
                 <div class="col-12 col-md-9 pt-4">
-                    <div class="table-responsive">
+
+                    <!-- prikaz med nalaganjem -->
+
+                    <div v-if="loading" class="alert alert-warning">
+
+                        Nalaganje glasbenikov, strežnik se zaganja ...
+
+                    </div>
+
+                    <!-- prikaz napake -->
+
+                    <div v-if="errorMessage" class="alert alert-danger">
+
+                        {{ errorMessage }}
+
+                    </div>
+
+                    <!-- če ni podatkov -->
+
+                    <div
+                        v-if="!loading && musicians.length === 0 && !errorMessage"
+                        class="alert alert-secondary">
+
+                        Ni vnesenih glasbenikov.
+
+                    </div>
+
+                    <div
+                        class="table-responsive"
+                        v-if="!loading && musicians.length > 0">
+
                         <table class="table">
+
                             <thead>
+
                                 <tr>
+
                                     <th style="background-color:black;color:rgb(240,240,81)">
                                         Glasbenik
                                     </th>
+
                                     <th style="background-color:black;color:rgb(240,240,81)">
                                         Zvrst
                                     </th>
+
                                     <th style="background-color:black;color:rgb(240,240,81)">
                                         Izbris
                                     </th>
+
                                     <th style="background-color:black;color:rgb(240,240,81)">
                                         Sprememba
                                     </th>
+
                                 </tr>
+
                             </thead>
 
                             <tbody>
+
                                 <!-- glasbeniki -->
-                                <tr v-for="musician in musicians" :key="musician.id">
+
+                                <tr
+                                    v-for="musician in musicians"
+                                    :key="musician.id">
+
                                     <td style="background-color:black;color:rgb(240,240,81)">
                                         {{musician.name}}
                                     </td>
+
                                     <td style="background-color:black;color:rgb(240,240,81)">
                                         {{musician.genre.name}}
                                     </td>
+
                                     <td style="background-color:black">
-                                        <button @click="deleteMusician(musician.id)" type="button"
+
+                                        <button
+                                            @click="deleteMusician(musician.id)"
+                                            type="button"
                                             class="btn btn-sm btn-outline-light"
                                             style="border-color:rgb(240,240,81);color:rgb(240,240,81)">
+
                                             Izbriši
+
                                         </button>
+
                                     </td>
+
                                     <td style="background-color:black">
-                                        <button @click="populateForm(musician)" type="button"
+
+                                        <button
+                                            @click="populateForm(musician)"
+                                            type="button"
                                             class="btn btn-sm btn-secondary"
                                             style="border-color:rgb(240,240,81);color:rgb(240,240,81)">
+
                                             Spremeni
+
                                         </button>
+
                                     </td>
+
                                 </tr>
+
                             </tbody>
+
                         </table>
+
                     </div>
+
                     <div class="d-flex justify-content-center align-items-center gap-3 mt-3">
 
-                        <button @click="previousPage()" class="btn btn-outline-light" :disabled="currentPage === 0"
+                        <button
+                            @click="previousPage()"
+                            class="btn btn-outline-light"
+                            :disabled="currentPage === 0"
                             style="border-color:rgb(240,240,81);color:rgb(240,240,81)">
 
                             Prejšnja
@@ -131,10 +238,14 @@
                         </button>
 
                         <span style="color:rgb(240,240,81)">
+
                             Stran {{ currentPage + 1 }} / {{ totalPages }}
+
                         </span>
 
-                        <button @click="nextPage()" class="btn btn-outline-light"
+                        <button
+                            @click="nextPage()"
+                            class="btn btn-outline-light"
                             :disabled="currentPage >= totalPages - 1"
                             style="border-color:rgb(240,240,81);color:rgb(240,240,81)">
 
@@ -145,66 +256,134 @@
                     </div>
 
                     <!-- dodajanje novega glasbenika -->
+
                     <div class="pt-4">
+
                         <h4 style="color:rgb(240,240,81)">
                             Dodaj glasbenika
                         </h4>
+
                         <form>
+
                             <div class="mb-3">
-                                <label for="musicianName" class="form-label" style="color:rgb(240,240,81)">
+
+                                <label
+                                    for="musicianName"
+                                    class="form-label"
+                                    style="color:rgb(240,240,81)">
+
                                     Glasbenik
+
                                 </label>
-                                <input v-model="formMusician.name" type="text" class="form-control" id="musicianName"
+
+                                <input
+                                    v-model="formMusician.name"
+                                    type="text"
+                                    class="form-control"
+                                    id="musicianName"
                                     style="background-color:rgb(240,240,81)">
+
                             </div>
+
                             <div class="mb-3">
-                                <label for="ZvrstSelect" class="form-label" style="color:rgb(240,240,81)">
+
+                                <label
+                                    for="ZvrstSelect"
+                                    class="form-label"
+                                    style="color:rgb(240,240,81)">
+
                                     Zvrst
+
                                     <p style="font-size:small;margin-bottom:0">
+
                                         (če zvrsti ni na seznamu,
                                         jo najprej dodaj v zavihku
                                         'Zvrsti')
+
                                     </p>
+
                                 </label>
+
                                 <!-- povezava med vrednostjo spremenljivke v obrazcu in vrednostjo spremenljivke v vue kodi/ shrani se v pomnilniku računalnika pri vsakemu posebej -->
-                                <select v-model="formMusician.genre" id="ZvrstSelect" class="form-select"
+
+                                <select
+                                    v-model="formMusician.genre"
+                                    id="ZvrstSelect"
+                                    class="form-select"
                                     style="background-color:rgb(240,240,81)">
-                                    <option v-for="genre in genres" :value="genre" :key="genre.id">
+
+                                    <option
+                                        v-for="genre in genres"
+                                        :value="genre"
+                                        :key="genre.id">
+
                                         {{genre.name}}
+
                                     </option>
+
                                 </select>
+
                             </div>
+
                         </form>
+
                         <div class="d-flex gap-2 flex-wrap">
-                            <button @click="postMusician()" type="button" class="btn btn-outline-dark"
+
+                            <button
+                                @click="postMusician()"
+                                type="button"
+                                class="btn btn-outline-dark"
                                 style="background-color:yellow">
+
                                 Shrani
+
                             </button>
-                            <button @click="cleanForm()" type="button" class="btn btn-outline-light"
+
+                            <button
+                                @click="cleanForm()"
+                                type="button"
+                                class="btn btn-outline-light"
                                 style="border-color:rgb(240,240,81);color:rgb(240,240,81)">
+
                                 Počisti obrazec
+
                             </button>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </main>
 
         <!-- footer -->
+
         <footer class="mt-auto">
+
             <!-- Copyright -->
-            <div class="text-center py-3 w-100" style="
-                background-color:rgb(61,57,57);
-                color:black;">
+
+            <div class="text-center py-3 w-100"
+                style="background-color:rgb(61,57,57);color:black;">
+
                 © 2024 Copyright: PRA NOO - FIŠ NM
+
             </div>
+
         </footer>
+
     </div>
 
     <!-- bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-        </script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous">
+    </script>
+
 </body>
 
 </html>
