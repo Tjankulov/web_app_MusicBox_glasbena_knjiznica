@@ -9,6 +9,9 @@ createApp({
       genres: [],
       musicians: [],
 
+      loading: false,
+      errorMessage: '',
+
       currentPage: 0,
       totalPages: 0,
       pageSize: 10,
@@ -38,6 +41,9 @@ createApp({
 
     // Naloži vse glasbenike (paginacija)
     loadMusicians(page = 0) {
+      this.loading = true;
+      this.errorMessage = '';
+
       axios
         .get(`${API}/musicians?page=${page}&size=${this.pageSize}`)
         .then((response) => {
@@ -45,7 +51,13 @@ createApp({
           this.currentPage = response.data.number;
           this.totalPages = response.data.totalPages;
         })
-        .catch(console.error);
+        .catch((error) => {
+          console.error(error);
+          this.errorMessage = 'Glasbenikov trenutno ni mogoče naložiti. Strežnik se morda še zaganja.';
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     // Naloži zvrsti
@@ -64,13 +76,23 @@ createApp({
         this.loadMusicians(0);
         return;
       }
+
+      this.loading = true;
+      this.errorMessage = '';
+
       axios.get(`${API}/musicians/byGenre/${encodeURIComponent(genre.trim())}`)
         .then((response) => {
           this.musicians = response.data;
           this.currentPage = 0;
           this.totalPages = 1;
         })
-        .catch(console.error);
+        .catch((error) => {
+          console.error(error);
+          this.errorMessage = 'Glasbenikov trenutno ni mogoče naložiti. Strežnik se morda še zaganja.';
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     // Dodaj ali posodobi glasbenika
@@ -127,4 +149,4 @@ createApp({
     }
   }
 
-}).mount('#musicians');
+}).mount('#musicians'); // v musicians.html poišči id s tem tagom in dodaj vue logiko (enako za ostale js)
