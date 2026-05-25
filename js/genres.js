@@ -4,6 +4,8 @@ createApp({
   data() {
     return {
       genres: [],
+      loading: false,
+      errorMessage: '',
       formGenre: {
         id: null,
         name: ''
@@ -16,11 +18,20 @@ createApp({
   methods: {
     // vrne seznam zvrsti
     loadGenres() {
+      this.loading = true;
+      this.errorMessage = '';
+
       axios.get("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres")
         .then((response) => {
           this.genres = response.data;
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          console.error(error);
+          this.errorMessage = 'Zvrsti trenutno ni mogoče naložiti. Strežnik se morda še zaganja.';
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     deleteGenre(id) {
       axios.delete("https://web-app-musicbox-glasbena-knjiznica-1.onrender.com/genres/" + id)
